@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Button } from ".";
 import { Plus } from "lucide-react";
+import { useNotesContext } from "../context";
 
 const SideBar = () => {
   const colorPalette: string[] = [
@@ -11,12 +12,15 @@ const SideBar = () => {
     "bg-blue-300",
     "bg-green-300",
   ];
-
   const [displayNoteColors, setDisplayNoteColors] = useState<boolean>(false);
+  const { notes, setNotes } = useNotesContext();
+
+  const createNote = (color: string) => {
+    setNotes([...notes, { color }]);
+  };
 
   return (
-    <div className="flex flex-row sm:flex-col justify-center sm:justify-start items-center w-screen sm:h-screen fixed bottom-0 h-16 sm:w-32 border-t sm:border-r border-r-zinc-200 p-6">
-      <h2 className="mb-0 sm:mb-10 hidden sm:block">Notes</h2>
+    <div className="flex flex-row sm:flex-col justify-center sm:justify-start items-center w-screen sm:h-screen fixed bottom-0 h-16 sm:w-32 border-t sm:border-r border-r-zinc-200 p-6 sm:p-12 bg-white">
       <Button
         styles={`flex justify-center items-center bg-black rounded-full p-2 mb-0 sm:mb-12 ${
           !displayNoteColors ? "active:p-3" : "active:none hidden sm:block"
@@ -34,7 +38,7 @@ const SideBar = () => {
               styles={`${color} p-2 rounded-full m-2 ${
                 displayNoteColors ? "animate-fade-in" : "animate-fade-out"
               }`}
-              onClick={() => console.log("BOOM")}
+              onClick={() => createNote(color)}
               disabled={false}
             />
           ))}
