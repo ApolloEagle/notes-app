@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 export interface Note {
+  id: string;
   color: string;
 }
 

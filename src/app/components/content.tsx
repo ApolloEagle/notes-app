@@ -13,7 +13,7 @@ const Content = () => {
       </h1>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ml-0 sm:ml-32 mt-0 sm:mt-32 px-10 pb-24 sm:pb-10 pt-10 sm:pt-0 z-0">
         {notes.map((note: Note, idx: number) => (
-          <Card key={idx} color={note.color} />
+          <Card key={idx} color={note.color} id={note.id} />
         ))}
       </div>
     </div>
