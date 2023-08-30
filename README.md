@@ -6,14 +6,6 @@
 
 ## Getting Started
 
-### Requirements:
-
-#### npm
-
-```bash
-sudo npm i -g expo-cli
-```
-
 ### Installing Locally
 
 After cloning the repo, run the following commands:
