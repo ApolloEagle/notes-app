@@ -8,11 +8,13 @@ const Card = ({ id, body, color, saved }: Note) => {
   const { notes, setNotes } = useNotesContext();
   const [noteText, setNoteText] = useState<string>("");
 
+  // Clear noteText when new note is created.
   useEffect(() => {
     setNoteText(body);
   }, [body]);
 
   const handleUpdateNote = () => {
+    if (noteText.trim() === "") return;
     const updatedNotes = notes.map((note: Note) =>
       note.id === id ? { ...note, body: noteText, saved: !saved } : note
     );
@@ -24,6 +26,7 @@ const Card = ({ id, body, color, saved }: Note) => {
     setNotes(updatedNotes);
   };
 
+  // Checking note text/body to conditionally render edit/save buttons.
   const checkNoteText = () => {
     return body.length > 20 ? true : noteText.length > 20 ? true : false;
   };

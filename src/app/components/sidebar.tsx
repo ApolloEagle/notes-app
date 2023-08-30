@@ -17,10 +17,12 @@ const SideBar = () => {
   const { notes, setNotes } = useNotesContext();
   const [showSearch, setShowSearch] = useState<boolean>(false);
 
+  // Add note to begging of notes array.
   const createNote = (color: string) => {
     setNotes([{ id: uuidv4(), color, body: "", saved: false }, ...notes]);
   };
 
+  // Reset search bar state on screen resize. Prevent search bar from covering sidebar buttons on screen resize.
   useEffect(() => {
     window.addEventListener("resize", () => setShowSearch(false));
     return () => {

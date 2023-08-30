@@ -6,6 +6,7 @@ import { Note } from "../types";
 const Content = () => {
   const { notes, search } = useNotesContext();
 
+  // Filter notes by text in body.
   const filteredNotes = notes.filter((note) =>
     note.body.toLowerCase().includes(search.toLowerCase())
   );
