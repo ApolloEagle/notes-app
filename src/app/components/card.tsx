@@ -1,29 +1,31 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useEffect, useState } from "react";
 import { Check, Pencil, X } from "lucide-react";
 import { Button } from ".";
 import { useNotesContext } from "../context";
+import { Note } from "../types";
 
-interface CardProps {
-  color: string;
-  id: string;
-}
-
-const Card = ({ color, id }: CardProps) => {
-  const [text, setText] = useState<string>("");
-  const [noteSaved, setNoteSaved] = useState<boolean>(false);
+const Card = ({ id, body, color, saved }: Note) => {
   const { notes, setNotes } = useNotesContext();
+  const [noteText, setNoteText] = useState<string>("");
 
-  const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setText(event.target.value);
-  };
+  useEffect(() => {
+    setNoteText(body);
+  }, [body]);
 
   const handleUpdateNote = () => {
-    setNoteSaved(noteSaved ? false : true);
+    const updatedNotes = notes.map((note: Note) =>
+      note.id === id ? { ...note, body: noteText, saved: !saved } : note
+    );
+    setNotes(updatedNotes);
   };
 
   const handleDeleteNote = () => {
-    const updatedNotes = notes.filter((note) => note.id !== id);
+    const updatedNotes = notes.filter((note: Note) => note.id !== id);
     setNotes(updatedNotes);
+  };
+
+  const checkNoteText = () => {
+    return body.length > 20 ? true : noteText.length > 20 ? true : false;
   };
 
   return (
@@ -35,11 +37,12 @@ const Card = ({ color, id }: CardProps) => {
         name="story"
         minLength={20}
         maxLength={300}
-        placeholder="Write something..."
+        placeholder="What's on your mind?"
         autoFocus={true}
-        onChange={(e) => handleTextChange(e)}
-        disabled={noteSaved}
-      ></textarea>
+        onChange={(e) => setNoteText(e.target.value)}
+        value={noteText}
+        disabled={saved}
+      />
       <div className="flex flex-col justify-between items-end h-full">
         <Button
           styles="flex justify-center items-center bg-black rounded-full p-1"
@@ -48,13 +51,13 @@ const Card = ({ color, id }: CardProps) => {
         >
           <X color="white" size={16} />
         </Button>
-        {text.length > 20 && (
+        {checkNoteText() && (
           <Button
             styles="flex justify-center items-center bg-black rounded-full p-2 animate-fade-in"
             onClick={() => handleUpdateNote()}
             disabled={false}
           >
-            {noteSaved ? (
+            {saved ? (
               <Pencil color="white" size={20} />
             ) : (
               <Check color="white" size={20} />

@@ -1,21 +1,30 @@
 import React from "react";
-import { Card } from ".";
+import { Card, Search } from ".";
 import { useNotesContext } from "../context";
 import { Note } from "../types";
 
 const Content = () => {
-  const { notes } = useNotesContext();
+  const { notes, search } = useNotesContext();
+
+  const filteredNotes = notes.filter((note) =>
+    note.body.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="flex flex-col w-full">
-      <h1 className="hidden fixed bg-white top-0 left-32 w-full items-center text-5xl font-semibold mb-12 sm:flex p-10 z-10">
-        Notes
-      </h1>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ml-0 sm:ml-32 mt-0 sm:mt-32 px-10 pb-24 sm:pb-10 pt-10 sm:pt-0 z-0">
-        {notes.map((note: Note, idx: number) => (
-          <Card key={idx} color={note.color} id={note.id} />
-        ))}
+      <div className="hidden fixed bg-white top-0 left-32 w-[calc(100%-128px)] items-center justify-between mb-12 sm:flex p-10 z-10">
+        <h1 className="top-0 left-32 items-center text-5xl font-semibold">
+          Notes
+        </h1>
+        <Search />
       </div>
+      <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ml-0 sm:ml-32 mt-0 sm:mt-32 px-10 pb-24 sm:pb-10 pt-10 sm:pt-0 z-0">
+        {filteredNotes.map(({ ...props }: Note, idx: number) => (
+          <li key={idx}>
+            <Card {...props} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
