@@ -7,6 +7,8 @@ import { Note } from "../types";
 const Card = ({ id, body, color, saved }: Note) => {
   const { notes, setNotes } = useNotesContext();
   const [noteText, setNoteText] = useState<string>("");
+  const minLength = 20;
+  const maxLength = 300;
 
   // Clear noteText when new note is created.
   useEffect(() => {
@@ -28,7 +30,11 @@ const Card = ({ id, body, color, saved }: Note) => {
 
   // Checking note text/body to conditionally render edit/save buttons.
   const checkNoteText = () => {
-    return body.length > 20 ? true : noteText.length > 20 ? true : false;
+    return body.length > minLength
+      ? true
+      : noteText.length > minLength
+      ? true
+      : false;
   };
 
   return (
@@ -38,8 +44,8 @@ const Card = ({ id, body, color, saved }: Note) => {
       <textarea
         className={`outline-none border-none resize-none ${color} placeholder-zinc-100 h-full w-full`}
         name="story"
-        minLength={20}
-        maxLength={300}
+        minLength={minLength}
+        maxLength={maxLength}
         placeholder="What's on your mind?"
         autoFocus={true}
         onChange={(e) => setNoteText(e.target.value)}
